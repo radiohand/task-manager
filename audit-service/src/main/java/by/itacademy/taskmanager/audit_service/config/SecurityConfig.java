@@ -1,6 +1,9 @@
 package by.itacademy.taskmanager.audit_service.config;
 
+import by.itacademy.taskmanager.audit_service.core.dto.user.UserDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.user.UserDetailsDto;
 import by.itacademy.taskmanager.audit_service.endpoints.web.filters.JwtFilter;
+import by.itacademy.taskmanager.audit_service.service.user.api.IUserGetterService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -9,8 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -20,9 +22,21 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private static final String USER_STATUS_ACTIVATED = "ACTIVATED";
+
+    private final IUserGetterService userGetterService;
+
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public UserDetailsService userDetailsService() {
+        return email -> {
+            UserDTO user = userGetterService.get(email);
+            return UserDetailsDto.builder()
+                    .username(user.getEmail())
+                    .password("")
+                    .roles(user.getRole())
+                    .accountLocked(!user.getStatus().equals(USER_STATUS_ACTIVATED))
+                    .build();
+        };
     }
 
     @Bean

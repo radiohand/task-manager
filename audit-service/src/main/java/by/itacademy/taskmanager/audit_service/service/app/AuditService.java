@@ -28,8 +28,9 @@ public class AuditService implements IAuditService {
     private final ConversionService conversionService;
     private final Validator validator;
 
-    @Override
+
     @Transactional
+    @Override
     public Audit create(AuditCreateDTO createDTO) {
         validate(createDTO);
         by.itacademy.taskmanager.audit_service.dao.entity.Audit audit = conversionService.convert(createDTO, by.itacademy.taskmanager.audit_service.dao.entity.Audit.class);
@@ -57,6 +58,7 @@ public class AuditService implements IAuditService {
     protected Audit create(Audit audit) {
         return dao.save(audit);
     }
+
     private <T> void validate(T dto){
         Set<ConstraintViolation<T>> violations = validator.validate(dto);
 
