@@ -44,5 +44,8 @@ public class WebConfig implements WebMvcConfigurer {
 
         registry.addConverter(new UserToUserRefDtoConverter());
         registry.addConverter(new UserRefDtoToUserConverter());
+
+        registry.addFormatter(new ProjectRefDtoFormatter());
+        registry.addFormatter(new UserRefDtoFormatter());
     }
 }

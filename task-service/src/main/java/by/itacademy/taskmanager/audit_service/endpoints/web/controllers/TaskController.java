@@ -1,11 +1,7 @@
 package by.itacademy.taskmanager.audit_service.endpoints.web.controllers;
 
 import by.itacademy.taskmanager.audit_service.core.dto.app.*;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectUpdateDto;
 import by.itacademy.taskmanager.audit_service.core.dto.app.task.*;
-import by.itacademy.taskmanager.audit_service.core.enums.TaskStatus;
-import by.itacademy.taskmanager.audit_service.dao.entity.Task;
 import lombok.AllArgsConstructor;
 import by.itacademy.taskmanager.audit_service.service.app.api.ITaskService;
 import org.springframework.core.convert.ConversionService;

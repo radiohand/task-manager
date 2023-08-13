@@ -1,17 +1,15 @@
 package by.itacademy.taskmanager.audit_service.core.dto.app;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode
+
 public class UserRefDto {
     @NotBlank
     private UUID uuid;

@@ -74,6 +74,14 @@ public class TaskService implements ITaskService {
         if (task == null){
             throw new NoSuchTaskException();
         }
+
+        UserDTO userDTO = userGetterService.get(userHolder.getUser().getUsername());
+        UUID userUuid = userDTO.getUuid();
+
+        if (!task.getProject().getStaff().contains(new User(userUuid))
+                && !task.getProject().getManager().equals(new User(userUuid))){
+            return null;
+        }
         return task;
     }
 

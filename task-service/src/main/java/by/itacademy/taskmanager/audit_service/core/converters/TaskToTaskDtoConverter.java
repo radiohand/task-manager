@@ -24,7 +24,10 @@ public class TaskToTaskDtoConverter implements Converter<Task, TaskDto> {
         taskDto.setDtCreate(conversionService.convert(source.getDtCreate(), Long.class));
         taskDto.setDtUpdate(conversionService.convert(source.getDtUpdate(), Long.class));
 
-        taskDto.setProject(new ProjectRefDto(source.getProject().getUuid()));
+        ProjectRefDto dto = new ProjectRefDto();
+        dto.setUuid(source.getProject().getUuid());
+
+        taskDto.setProject(dto);
         taskDto.setTitle(source.getTitle());
         taskDto.setDescription(source.getDescription());
         taskDto.setTaskStatus(source.getTaskStatus());
