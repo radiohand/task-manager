@@ -1,6 +1,6 @@
 package by.itacademy.taskmanager.audit_service.endpoints.web.controllers;
 
-import by.itacademy.taskmanager.audit_service.core.exceptions.CustomValidationException;
+import by.itacademy.taskmanager.audit_service.core.exceptions.custom.CustomValidationException;
 import by.itacademy.taskmanager.audit_service.core.exceptions.error_responses.NestedErrorResponse;
 import by.itacademy.taskmanager.audit_service.core.exceptions.error_responses.SingleErrorResponse;
 import by.itacademy.taskmanager.audit_service.core.exceptions.error_responses.StructuredErrorResponse;

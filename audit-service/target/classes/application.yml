@@ -15,7 +15,7 @@ spring:
             client:
                 config:
                     userClient:
-                        url: http://localhost:80/app/users/
+                        url: http://localhost:80/app/users
 server:
     port: 81
     error:

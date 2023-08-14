@@ -1,7 +1,7 @@
 package by.itacademy.taskmanager.audit_service.core.converters;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.AuditDTO;
-import by.itacademy.taskmanager.audit_service.core.dto.app.UserAuditDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.local.AuditDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.local.UserAuditDTO;
 import by.itacademy.taskmanager.audit_service.dao.entity.Audit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;

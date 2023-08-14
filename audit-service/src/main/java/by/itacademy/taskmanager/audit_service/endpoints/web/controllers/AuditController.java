@@ -1,10 +1,10 @@
 package by.itacademy.taskmanager.audit_service.endpoints.web.controllers;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.AuditDTO;
-import by.itacademy.taskmanager.audit_service.core.dto.app.PageAuditDTO;
-import by.itacademy.taskmanager.audit_service.core.dto.app.PageDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.local.AuditDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.local.PageAuditDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.local.PageDTO;
 import lombok.AllArgsConstructor;
-import by.itacademy.taskmanager.audit_service.service.app.api.IAuditService;
+import by.itacademy.taskmanager.audit_service.service.local.api.IAuditService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

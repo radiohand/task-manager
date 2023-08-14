@@ -1,6 +1,6 @@
 package by.itacademy.taskmanager.audit_service.core.converters;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.AuditCreateDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.local.AuditCreateDTO;
 import by.itacademy.taskmanager.audit_service.core.enums.EssenceType;
 import by.itacademy.taskmanager.audit_service.dao.entity.Audit;
 import by.itacademy.taskmanager.audit_service.dao.entity.emb.User;

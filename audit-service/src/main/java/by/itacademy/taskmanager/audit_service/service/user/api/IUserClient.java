@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(value = "userClient")
 public interface IUserClient {
-    @RequestMapping(method = RequestMethod.GET, value = "{email}")
+    @RequestMapping(method = RequestMethod.GET, value = "/email/{email}")
     UserDTO get(@PathVariable() String email);
 }
