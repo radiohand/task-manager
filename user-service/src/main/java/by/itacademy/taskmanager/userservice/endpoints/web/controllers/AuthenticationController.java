@@ -1,8 +1,8 @@
 package by.itacademy.taskmanager.userservice.endpoints.web.controllers;
 
-import by.itacademy.taskmanager.userservice.core.dto.app.*;
+import by.itacademy.taskmanager.userservice.core.dto.local.*;
 import by.itacademy.taskmanager.userservice.dao.entity.User;
-import by.itacademy.taskmanager.userservice.service.app.api.IAuthenticationService;
+import by.itacademy.taskmanager.userservice.service.local.api.IAuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package by.itacademy.taskmanager.userservice.core.converters;
 
-import by.itacademy.taskmanager.userservice.core.dto.app.UserCreateDTO;
+import by.itacademy.taskmanager.userservice.core.dto.local.UserCreateDTO;
 import by.itacademy.taskmanager.userservice.core.enums.UserRole;
 import by.itacademy.taskmanager.userservice.core.enums.UserStatus;
 import by.itacademy.taskmanager.userservice.dao.entity.User;

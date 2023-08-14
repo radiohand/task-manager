@@ -1,10 +1,10 @@
 package by.itacademy.taskmanager.userservice.config;
 
-import by.itacademy.taskmanager.userservice.core.dto.app.UserDetailsDto;
+import by.itacademy.taskmanager.userservice.core.dto.local.UserDetailsDto;
 import by.itacademy.taskmanager.userservice.core.enums.UserStatus;
 import by.itacademy.taskmanager.userservice.dao.entity.User;
 import by.itacademy.taskmanager.userservice.endpoints.web.filters.JwtFilter;
-import by.itacademy.taskmanager.userservice.service.app.api.IUserService;
+import by.itacademy.taskmanager.userservice.service.local.api.IUserService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

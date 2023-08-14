@@ -1,9 +1,9 @@
 package by.itacademy.taskmanager.userservice.endpoints.web.controllers;
 
-import by.itacademy.taskmanager.userservice.core.dto.app.*;
+import by.itacademy.taskmanager.userservice.core.dto.local.*;
 import lombok.AllArgsConstructor;
 import by.itacademy.taskmanager.userservice.dao.entity.User;
-import by.itacademy.taskmanager.userservice.service.app.api.IUserService;
+import by.itacademy.taskmanager.userservice.service.local.api.IUserService;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -39,10 +39,9 @@ public class UserController {
 
     @PutMapping("/users/{uuid}/dt_update/{dt_update}")
     public ResponseEntity<UserDTO> update(@PathVariable UUID uuid,
-                          @PathVariable("dt_update") Long version,
+                          @PathVariable("dt_update") LocalDateTime version,
                           @RequestBody UserUpdateDTO updateDTO){
-        LocalDateTime dateTimeVersion = conversionService.convert(version, LocalDateTime.class);
-        return ResponseEntity.ok(entityToDto(service.update(new UpdateParamsDTO(uuid, dateTimeVersion), updateDTO)));
+        return ResponseEntity.ok(entityToDto(service.update(new UpdateParamsDTO(uuid, version), updateDTO)));
 
     }
 

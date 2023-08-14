@@ -1,6 +1,6 @@
 package by.itacademy.taskmanager.userservice.core.converters;
 
-import by.itacademy.taskmanager.userservice.core.dto.app.UserRegistrationDTO;
+import by.itacademy.taskmanager.userservice.core.dto.local.UserRegistrationDTO;
 import by.itacademy.taskmanager.userservice.dao.entity.User;
 import lombok.AllArgsConstructor;
 import org.springframework.core.convert.converter.Converter;

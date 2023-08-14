@@ -1,6 +1,7 @@
 package by.itacademy.taskmanager.userservice.endpoints.web.utils;
 
 import by.itacademy.taskmanager.userservice.config.property.AppProperty;
+import by.itacademy.taskmanager.userservice.core.exceptions.custom.BadTokenException;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -50,17 +51,12 @@ public class JwtTokenHandler {
         try {
             Jwts.parser().setSigningKey(property.getJwtProp().getSecret()).parseClaimsJws(token);
             return true;
-        } catch (SignatureException ex) {
-            //logger.error("Invalid JWT signature - {}", ex.getMessage());
-        } catch (MalformedJwtException ex) {
-            //logger.error("Invalid JWT token - {}", ex.getMessage());
+        } catch (SignatureException | MalformedJwtException ex) {
+            throw new BadTokenException("Invalid token");
         } catch (ExpiredJwtException ex) {
-            //logger.error("Expired JWT token - {}", ex.getMessage());
-        } catch (UnsupportedJwtException ex) {
-            //logger.error("Unsupported JWT token - {}", ex.getMessage());
-        } catch (IllegalArgumentException ex) {
-            //logger.error("JWT claims string is empty - {}", ex.getMessage());
+            throw new BadTokenException("Token is expired");
+        } catch (UnsupportedJwtException | IllegalArgumentException ex) {
+            throw new BadTokenException();
         }
-        return false;
     }
 }
