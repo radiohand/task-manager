@@ -16,6 +16,8 @@ spring:
                 config:
                     userClient:
                         url: http://localhost:80/app/users
+                    auditClient:
+                        url: http://localhost:81/app/audit
 server:
     port: 82
     error:

@@ -1,6 +1,5 @@
-package by.itacademy.taskmanager.audit_service.core.dto.app.task;
+package by.itacademy.taskmanager.audit_service.core.dto.local.task;
 
-import by.itacademy.taskmanager.audit_service.core.enums.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;

@@ -2,6 +2,8 @@ package by.itacademy.taskmanager.audit_service.dao.api;
 
 import by.itacademy.taskmanager.audit_service.core.enums.TaskStatus;
 import by.itacademy.taskmanager.audit_service.dao.entity.Task;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,5 +26,5 @@ public interface ITaskDao extends JpaRepository<Task, Long> {
 
     @Modifying
     @Query(value = "UPDATE app.task SET task_status = ?2 WHERE uuid = ?1", nativeQuery = true)
-    Task updateStatus(@Param(value = "uuid") UUID uuid, @Param(value = "task_status") TaskStatus status);
+    void updateStatus(UUID uuid, String status);
 }

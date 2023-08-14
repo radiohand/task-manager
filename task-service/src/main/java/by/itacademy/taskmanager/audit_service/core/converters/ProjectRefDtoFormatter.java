@@ -1,9 +1,7 @@
 package by.itacademy.taskmanager.audit_service.core.converters;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.ProjectRefDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.UserRefDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.ProjectRefDto;
 import lombok.AllArgsConstructor;
-import org.springframework.core.convert.ConversionService;
 import org.springframework.format.Formatter;
 import org.springframework.lang.NonNull;
 

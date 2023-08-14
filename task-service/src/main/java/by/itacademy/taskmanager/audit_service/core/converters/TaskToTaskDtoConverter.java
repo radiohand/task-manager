@@ -1,8 +1,8 @@
 package by.itacademy.taskmanager.audit_service.core.converters;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.ProjectRefDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.UserRefDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.task.TaskDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.ProjectRefDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.UserRefDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.task.TaskDto;
 import by.itacademy.taskmanager.audit_service.dao.entity.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;

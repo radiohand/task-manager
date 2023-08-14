@@ -1,4 +1,4 @@
-package by.itacademy.taskmanager.userservice.core.dto.audit;
+package by.itacademy.taskmanager.audit_service.core.dto.audit;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

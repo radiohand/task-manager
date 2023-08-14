@@ -1,13 +1,13 @@
 package by.itacademy.taskmanager.audit_service.endpoints.web.controllers;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.PageDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.PageGetterParamsDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.UpdateParamsDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.PageProjectDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectCreateDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectUpdateDto;
-import by.itacademy.taskmanager.audit_service.service.app.api.IProjectService;
+import by.itacademy.taskmanager.audit_service.core.dto.local.PageDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.PageGetterParamsDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.UpdateParamsDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.PageProjectDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.ProjectCreateDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.ProjectDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.ProjectUpdateDto;
+import by.itacademy.taskmanager.audit_service.service.local.api.IProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
@@ -49,7 +49,7 @@ public class ProjectController {
 
     @PutMapping("/project/{uuid}/dt_update/{dt_update}")
     public ResponseEntity<ProjectDto> update(@PathVariable UUID uuid,
-                                             @PathVariable LocalDateTime dtUpdate,
+                                             @PathVariable("dt_update") LocalDateTime dtUpdate,
                                              @RequestBody ProjectUpdateDto updateDto){
         return ResponseEntity
                 .ok(conversionService

@@ -1,9 +1,9 @@
-package by.itacademy.taskmanager.audit_service.service.app.api;
+package by.itacademy.taskmanager.audit_service.service.local.api;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.PageGetterParamsDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectCreateDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectUpdateDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.UpdateParamsDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.PageGetterParamsDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.ProjectCreateDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.ProjectUpdateDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.UpdateParamsDto;
 import by.itacademy.taskmanager.audit_service.dao.entity.Project;
 import org.springframework.data.domain.Page;
 

@@ -1,6 +1,5 @@
-package by.itacademy.taskmanager.audit_service.core.dto.app;
+package by.itacademy.taskmanager.audit_service.core.dto.local;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

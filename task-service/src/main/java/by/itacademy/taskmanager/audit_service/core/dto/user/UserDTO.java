@@ -1,5 +1,6 @@
 package by.itacademy.taskmanager.audit_service.core.dto.user;
 
+import by.itacademy.taskmanager.audit_service.core.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,5 +31,5 @@ public class UserDTO {
     private String status;
 
     @JsonProperty("role")
-    private String role;
+    private UserRole role;
 }

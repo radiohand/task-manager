@@ -1,7 +1,6 @@
-package by.itacademy.taskmanager.audit_service.core.dto.app;
+package by.itacademy.taskmanager.audit_service.core.dto.local;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.UUID;

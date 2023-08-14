@@ -1,4 +1,4 @@
-package by.itacademy.taskmanager.audit_service.core.dto.app;
+package by.itacademy.taskmanager.audit_service.core.dto.local;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;

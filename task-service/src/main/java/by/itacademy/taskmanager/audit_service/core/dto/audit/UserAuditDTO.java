@@ -1,6 +1,6 @@
-package by.itacademy.taskmanager.userservice.core.dto.audit;
+package by.itacademy.taskmanager.audit_service.core.dto.audit;
 
-import by.itacademy.taskmanager.userservice.core.enums.UserRole;
+import by.itacademy.taskmanager.audit_service.core.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

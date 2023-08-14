@@ -1,6 +1,6 @@
-package by.itacademy.taskmanager.audit_service.core.dto.app.project;
+package by.itacademy.taskmanager.audit_service.core.dto.local.project;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.UserRefDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.UserRefDto;
 import by.itacademy.taskmanager.audit_service.core.enums.ProjectStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 

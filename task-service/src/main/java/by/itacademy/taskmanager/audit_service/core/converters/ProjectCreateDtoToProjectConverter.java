@@ -1,7 +1,7 @@
 package by.itacademy.taskmanager.audit_service.core.converters;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.UserRefDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectCreateDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.UserRefDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.ProjectCreateDto;
 import by.itacademy.taskmanager.audit_service.core.enums.ProjectStatus;
 import by.itacademy.taskmanager.audit_service.dao.entity.Project;
 import by.itacademy.taskmanager.audit_service.dao.entity.User;

@@ -1,10 +1,11 @@
-package by.itacademy.taskmanager.userservice.service.audit;
+package by.itacademy.taskmanager.audit_service.service.audit;
 
-import by.itacademy.taskmanager.userservice.core.dto.audit.AuditDTO;
-import by.itacademy.taskmanager.userservice.core.dto.audit.UserAuditDTO;
-import by.itacademy.taskmanager.userservice.dao.entity.User;
-import by.itacademy.taskmanager.userservice.service.audit.api.IAuditSenderService;
-import by.itacademy.taskmanager.userservice.service.audit.api.IAuditService;
+import by.itacademy.taskmanager.audit_service.core.dto.audit.AuditDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.audit.UserAuditDTO;
+import by.itacademy.taskmanager.audit_service.core.dto.user.UserDTO;
+import by.itacademy.taskmanager.audit_service.dao.entity.Project;
+import by.itacademy.taskmanager.audit_service.service.audit.api.IAuditSenderService;
+import by.itacademy.taskmanager.audit_service.service.audit.api.IAuditService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,18 +14,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuditService implements IAuditService {
 
-    private static final String ESSENCE_TYPE = "USER";
+    private static final String ESSENCE_TYPE = "PROJECT";
 
     private final IAuditSenderService auditSenderService;
 
     @Override
-    public void send(User target, User performer, String text) {
+    public void send(Project target, UserDTO performer, String text) {
         send(generate(target, performer, text));
     }
 
-    private AuditDTO generate(User target, User performer, String text){
+    private AuditDTO generate(Project target, UserDTO performer, String text){
         AuditDTO dto = new AuditDTO();
         UserAuditDTO userAuditDTO = new UserAuditDTO();
+
         userAuditDTO.setUuid(performer.getUuid());
         userAuditDTO.setFio(performer.getFio());
         userAuditDTO.setEmail(performer.getEmail());

@@ -1,6 +1,6 @@
 package by.itacademy.taskmanager.audit_service.core.converters;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.task.TaskCreateDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.task.TaskCreateDto;
 import by.itacademy.taskmanager.audit_service.core.enums.TaskStatus;
 import by.itacademy.taskmanager.audit_service.dao.api.IProjectDao;
 import by.itacademy.taskmanager.audit_service.dao.entity.Task;

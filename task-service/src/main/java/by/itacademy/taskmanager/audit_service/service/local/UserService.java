@@ -1,9 +1,9 @@
-package by.itacademy.taskmanager.audit_service.service.app;
+package by.itacademy.taskmanager.audit_service.service.local;
 
-import by.itacademy.taskmanager.audit_service.core.exceptions.NoSuchUserException;
+import by.itacademy.taskmanager.audit_service.core.exceptions.custom.NoSuchUserException;
 import by.itacademy.taskmanager.audit_service.dao.api.IUserDao;
 import by.itacademy.taskmanager.audit_service.dao.entity.User;
-import by.itacademy.taskmanager.audit_service.service.app.api.IUserService;
+import by.itacademy.taskmanager.audit_service.service.local.api.IUserService;
 import by.itacademy.taskmanager.audit_service.service.user.api.IUserGetterService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

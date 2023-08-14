@@ -1,4 +1,4 @@
-package by.itacademy.taskmanager.audit_service.core.exceptions;
+package by.itacademy.taskmanager.audit_service.core.exceptions.custom;
 
 public class BadTokenException extends CustomValidationException{
     public BadTokenException() {

@@ -1,6 +1,6 @@
 package by.itacademy.taskmanager.audit_service.core.converters;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.UserRefDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.UserRefDto;
 import by.itacademy.taskmanager.audit_service.dao.entity.User;
 import org.springframework.core.convert.converter.Converter;
 

@@ -1,8 +1,8 @@
-package by.itacademy.taskmanager.userservice.service.audit;
+package by.itacademy.taskmanager.audit_service.service.audit;
 
-import by.itacademy.taskmanager.userservice.core.dto.audit.AuditDTO;
-import by.itacademy.taskmanager.userservice.service.audit.api.IAuditClient;
-import by.itacademy.taskmanager.userservice.service.audit.api.IAuditSenderService;
+import by.itacademy.taskmanager.audit_service.core.dto.audit.AuditDTO;
+import by.itacademy.taskmanager.audit_service.service.audit.api.IAuditClient;
+import by.itacademy.taskmanager.audit_service.service.audit.api.IAuditSenderService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

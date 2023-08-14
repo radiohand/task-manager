@@ -1,17 +1,17 @@
-package by.itacademy.taskmanager.audit_service.service.app;
+package by.itacademy.taskmanager.audit_service.service.local;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.*;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectCreateDto;
-import by.itacademy.taskmanager.audit_service.core.dto.app.project.ProjectUpdateDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.*;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.ProjectCreateDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.project.ProjectUpdateDto;
 import by.itacademy.taskmanager.audit_service.core.dto.user.UserDTO;
 import by.itacademy.taskmanager.audit_service.core.enums.ProjectStatus;
-import by.itacademy.taskmanager.audit_service.core.exceptions.NoSuchProjectException;
-import by.itacademy.taskmanager.audit_service.core.exceptions.OutdatedVersionException;
+import by.itacademy.taskmanager.audit_service.core.exceptions.custom.NoSuchProjectException;
+import by.itacademy.taskmanager.audit_service.core.exceptions.custom.OutdatedVersionException;
 import by.itacademy.taskmanager.audit_service.dao.api.IProjectDao;
 import by.itacademy.taskmanager.audit_service.dao.entity.Project;
 import by.itacademy.taskmanager.audit_service.dao.entity.User;
-import by.itacademy.taskmanager.audit_service.service.app.api.IProjectService;
-import by.itacademy.taskmanager.audit_service.service.app.api.IUserService;
+import by.itacademy.taskmanager.audit_service.service.local.api.IProjectService;
+import by.itacademy.taskmanager.audit_service.service.local.api.IUserService;
 import by.itacademy.taskmanager.audit_service.service.audit.api.IAuditService;
 import by.itacademy.taskmanager.audit_service.service.security.UserHolder;
 import by.itacademy.taskmanager.audit_service.service.user.api.IUserGetterService;

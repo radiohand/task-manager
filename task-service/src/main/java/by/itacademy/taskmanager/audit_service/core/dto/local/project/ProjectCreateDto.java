@@ -1,9 +1,7 @@
-package by.itacademy.taskmanager.audit_service.core.dto.app.project;
+package by.itacademy.taskmanager.audit_service.core.dto.local.project;
 
-import by.itacademy.taskmanager.audit_service.core.dto.app.UserRefDto;
+import by.itacademy.taskmanager.audit_service.core.dto.local.UserRefDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
