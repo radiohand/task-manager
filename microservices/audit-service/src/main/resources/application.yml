@@ -1,0 +1,34 @@
+spring:
+    application:
+      name: audit-service
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5433/audit
+        username: postgres
+        password: 1234qwer
+    jpa:
+        properties:
+            hibernate:
+                default_schema: app
+                show_sql: true
+                hbm2ddl.auto: validate
+    cloud:
+        openfeign:
+            client:
+                config:
+                    userClient:
+                        url: http://localhost:80/app/users
+server:
+    port: 0
+    error:
+        include-message: always
+
+app:
+    jwt_prop:
+        secret: NsasdOASDKFSDF123ASDKLAJFLSDKFJHEWUFHSDFNBHBwaEBjhbwe
+        issuer: Alex
+
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8761/eureka
