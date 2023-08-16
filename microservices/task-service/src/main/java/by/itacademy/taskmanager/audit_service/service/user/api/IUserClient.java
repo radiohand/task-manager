@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.UUID;
 
-@FeignClient(value = "userClient")
+@FeignClient(value = "user-service")
 public interface IUserClient {
-    @RequestMapping(method = RequestMethod.GET, value = "/email/{email}")
+    @RequestMapping(method = RequestMethod.GET, value = "/app/users/email/{email}")
     UserDTO get(@PathVariable() String email);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/uuid/{uuid}")
+    @RequestMapping(method = RequestMethod.GET, value = "/app/users/uuid/{uuid}")
     UserDTO get(@PathVariable() UUID uuid);
 }

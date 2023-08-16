@@ -30,13 +30,6 @@ spring:
     thymeleaf:
         check-template-location: false
 
-    cloud:
-        openfeign:
-            client:
-                config:
-                    auditClient:
-                        url: http://localhost:81/app/audit
-
 server:
     port: 0
     error:
@@ -44,7 +37,7 @@ server:
 app:
     email_service_prop:
         email_subject: Task Manager Verification
-        redirect_url: http://localhost/users/verification
+        redirect_url: http://user-service/users/verification
     jwt_prop:
         secret: NsasdOASDKFSDF123ASDKLAJFLSDKFJHEWUFHSDFNBHBwaEBjhbwe
         issuer: Alex

@@ -12,16 +12,8 @@ spring:
                 default_schema: app
                 show_sql: true
                 hbm2ddl.auto: validate
-    cloud:
-        openfeign:
-            client:
-                config:
-                    userClient:
-                        url: http://localhost:80/app/users
-                    auditClient:
-                        url: http://localhost:81/app/audit
 server:
-    port: 82
+    port: 0
     error:
         include-message: always
 

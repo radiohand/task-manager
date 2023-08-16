@@ -27,6 +27,8 @@ import java.util.UUID;
 @EnableFeignClients
 @EnableWebSecurity
 
+@EnableDiscoveryClient
+
 @SpringBootApplication
 public class UserServiceApplication {
 

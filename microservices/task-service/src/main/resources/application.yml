@@ -12,14 +12,6 @@ spring:
                 default_schema: app
                 show_sql: true
                 hbm2ddl.auto: validate
-    cloud:
-        openfeign:
-            client:
-                config:
-                    userClient:
-                        url: http://localhost:80/app/users
-                    auditClient:
-                        url: http://localhost:81/app/audit
 server:
     port: 0
     error:
@@ -33,3 +25,5 @@ eureka:
     client:
         service-url:
             defaultZone: http://localhost:8761/eureka
+    instance:
+        instanceId: ${spring.cloud.client.hostname}:${spring.application.name}:${local.server.port}

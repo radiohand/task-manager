@@ -18,6 +18,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableFeignClients
 @EnableWebSecurity
 
+@EnableDiscoveryClient
+
 @SpringBootApplication
 public class AuditServiceApplication {
 
