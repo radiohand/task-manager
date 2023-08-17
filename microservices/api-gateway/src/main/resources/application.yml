@@ -50,3 +50,10 @@ logging:
     root: INFO
     org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
     org.springframework.cloud.gateway: TRACE
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+

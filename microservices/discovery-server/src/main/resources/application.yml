@@ -1,6 +1,10 @@
 spring:
   application:
     name: discovery-server
+
+  cloud:
+    compatibility-verifier:
+      enabled: false
 eureka:
   instance:
     hostname: localhost
@@ -9,6 +13,11 @@ eureka:
     fetch-registry: false
 server:
   port: 8761
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
 
 app:
   security_prop:

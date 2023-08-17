@@ -32,10 +32,10 @@ spring:
           filters:
             - SetPath=/
 
-#        - id: discovery-server-static
-#          uri: http://localhost:8761
-#          predicates:
-#            - Path=/eureka/**
+        - id: discovery-server-static
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/**
 
 server:
   port: 80
@@ -43,10 +43,17 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://admin:admin@localhost:8761/eureka
 
 logging:
   level:
     root: INFO
     org.springframework.cloud.gateway.route.RouteDefinitionLocator: INFO
     org.springframework.cloud.gateway: TRACE
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+
