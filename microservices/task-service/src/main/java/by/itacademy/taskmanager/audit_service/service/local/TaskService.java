@@ -25,10 +25,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @AllArgsConstructor
 @Service
@@ -77,13 +74,8 @@ public class TaskService implements ITaskService {
             throw new NoSuchTaskException();
         }
 
-        UserDTO userDTO = userGetterService.get(userHolder.getUser().getUsername());
-        UUID userUuid = userDTO.getUuid();
+        if (!hasAccess(task)){return null;}
 
-        if (!task.getProject().getStaff().contains(new User(userUuid))
-                && !task.getProject().getManager().equals(new User(userUuid))){
-            return null;
-        }
         return task;
     }
 
@@ -92,11 +84,16 @@ public class TaskService implements ITaskService {
     public Page<Task> getPage(PageGetterParamsDto paramsDTO, PageTaskFilterDto filterDto) {
         validate(paramsDTO);
         validate(filterDto);
+        List<Task> tasks;
 
         UserDTO userDTO = userGetterService.get(userHolder.getUser().getUsername());
         UUID userUuid = userDTO.getUuid();
 
-        List<Task> tasks = dao.findAllForUser(userUuid);
+        if (userDTO.getRole().equals(UserRole.ADMIN)){
+            tasks = dao.findAll();
+        } else {
+            tasks = dao.findAllForUser(userUuid);
+        }
 
         if (filterDto.getStatus() != null && !filterDto.getStatus().isEmpty()){
             List<String> statusList = filterDto.getStatus();

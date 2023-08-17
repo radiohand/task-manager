@@ -84,6 +84,11 @@ public class ProjectService implements IProjectService {
     @Override
     public Project getCard(UUID uuid) {
         Project project = dao.findByUuid(uuid);
+
+        if (!hasAccess(project)){
+            return null;
+        }
+
         if (project == null){
             throw new NoSuchProjectException();
         }
@@ -93,11 +98,16 @@ public class ProjectService implements IProjectService {
     @Transactional(readOnly = true)
     @Override
     public Page<Project> getPage(PageGetterParamsDto paramsDTO, Boolean archived) {
+        List<Project> projects;
 
         UserDTO userDTO = userGetterService.get(userHolder.getUser().getUsername());
         UUID userUuid = userDTO.getUuid();
 
-        List<Project> projects = dao.findAllForUser(userUuid);
+        if (userDTO.getRole().equals(UserRole.ADMIN)) {
+            projects = dao.findAll();
+        } else {
+            projects = dao.findAllForUser(userUuid);
+        }
 
         if (!archived){
             projects = projects

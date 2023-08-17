@@ -37,11 +37,11 @@ server:
 app:
     email_service_prop:
         email_subject: Task Manager Verification
-        redirect_url: http://user-service/users/verification
+        redirect_url: http://localhost/api/v1/users/verification
     jwt_prop:
         secret: NsasdOASDKFSDF123ASDKLAJFLSDKFJHEWUFHSDFNBHBwaEBjhbwe
         issuer: Alex
 eureka:
     client:
         service-url:
-            defaultZone: http://localhost:8761/eureka/
+            defaultZone: http://admin:admin@localhost:8761/eureka

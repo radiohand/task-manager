@@ -6,6 +6,7 @@ import by.itacademy.taskmanager.userservice.core.dto.local.VerificationParamsDTO
 import by.itacademy.taskmanager.userservice.core.enums.UserRole;
 import by.itacademy.taskmanager.userservice.core.enums.UserStatus;
 import by.itacademy.taskmanager.userservice.core.exceptions.custom.InactiveAccountException;
+import by.itacademy.taskmanager.userservice.core.exceptions.custom.NoSuchUserException;
 import by.itacademy.taskmanager.userservice.core.exceptions.custom.WrongPasswordException;
 import by.itacademy.taskmanager.userservice.core.exceptions.custom.WrongVerificationCodeException;
 import by.itacademy.taskmanager.userservice.dao.entity.Code;
@@ -27,6 +28,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.mail.MailException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -99,7 +101,15 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     public String login(LoginDTO dto){
-        UserDetails userDetails = detailsService.loadUserByUsername(dto.getEmail());
+
+        UserDetails userDetails;
+
+        try{
+            userDetails = detailsService.loadUserByUsername(dto.getEmail());
+        } catch (UsernameNotFoundException e){
+            throw new NoSuchUserException();
+        }
+
         if(!passwordEncoder.matches(dto.getPassword(), userDetails.getPassword())){
             throw new WrongPasswordException();
         }

@@ -12,6 +12,6 @@ public interface IProjectDao extends JpaRepository<Project, UUID> {
     Project findByUuid (UUID uuid);
 
     @Modifying
-    @Query(value = "SELECT * FROM app.project WHERE manager_uuid = ?1 OR (SELECT staff_uuid FROM app.project_staff WHERE project_uuid = app.project.uuid) = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM app.project WHERE manager_uuid = ?1 OR ?1 IN (SELECT staff_uuid FROM app.project_staff WHERE project_uuid = app.project.uuid)", nativeQuery = true)
     List<Project> findAllForUser(UUID userUuid);
 }
