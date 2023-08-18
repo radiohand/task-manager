@@ -1,0 +1,14 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "TaskManager DB",
+      "Group": "Servers",
+      "Port": 5431,
+      "Username": "admin",
+      "Password": "admin",
+      "Host": "db",
+      "SSLMode": "prefer",
+      "MaintenanceDB": "postgres"
+    }
+  }
+}

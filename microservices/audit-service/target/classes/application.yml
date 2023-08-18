@@ -12,6 +12,16 @@ spring:
                 default_schema: app
                 show_sql: true
                 hbm2ddl.auto: validate
+    kafka:
+        bootstrap-servers: localhost:9092
+        template:
+            default-topic: auditTopic
+        consumer:
+            key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+            value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+            group-id: auditId
+        properties:
+            spring.json.type.mapping: event:by.itacademy.taskmanager.audit_service.core.dto.local.AuditCreateDTO
 server:
     port: 0
     error:

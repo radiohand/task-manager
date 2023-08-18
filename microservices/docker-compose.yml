@@ -1,0 +1,141 @@
+---
+version: '3.7'
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.3.0
+    hostname: zookeeper
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  broker:
+    image: confluentinc/cp-kafka:7.3.0
+    container_name: broker
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+
+  db:
+    container_name: db
+    image: postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgresql/user-service/ddl/ddl.sql:/docker-entrypoint-initdb.d/user_ddl.sql
+      - ./postgresql/audit-service/ddl/ddl.sql:/docker-entrypoint-initdb.d/audit_ddl.sql
+      - ./postgresql/task-service/ddl/ddl.sql:/docker-entrypoint-initdb.d/task_ddl.sql
+    expose:
+      - "5431"
+    ports:
+      - "5431:5431"
+    command: -p 5431
+    restart: unless-stopped
+
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+
+  discovery-server:
+    image: radiohand/discovery-server:latest
+    container_name: discovery-server
+    pull_policy: always
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - zipkin
+
+  api-gateway:
+    image: radiohand/api-gateway:latest
+    container_name: api-gateway
+    pull_policy: always
+    ports:
+      - "80:80"
+    expose:
+      - "80"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY=TRACE
+    depends_on:
+      - zipkin
+      - discovery-server
+
+  audit-service:
+    image: radiohand/audit-service:latest
+    container_name: audit-service
+    pull_policy: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - db
+      - discovery-server
+      - api-gateway
+      - broker
+
+  user-service:
+    image: radiohand/user-service:latest
+    container_name: user-service
+    pull_policy: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - db
+      - discovery-server
+      - api-gateway
+      - audit-service
+      - broker
+
+  task-service:
+    image: radiohand/task-service:latest
+    container_name: task-service
+    pull_policy: always
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - db
+      - discovery-server
+      - api-gateway
+      - audit-service
+      - broker
+
+  pg-admin:
+    image: dpage/pgadmin4:latest
+    container_name: pg-admin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "82:80"
+    volumes:
+      - ./pgadmin/config/servers.json:/pgadmin4/servers.json
+
+  swagger-ui:
+    build: swagger-ui
+    image: swaggerapi/swagger-ui:latest
+    ports:
+      - "81:8080"
+    volumes:
+      - ./swagger-ui/user-service/spec/user-service.yml:/usr/share/nginx/html/doc/user-service.yaml
+      - ./swagger-ui/audit-service/spec/audit-service.yml:/usr/share/nginx/html/doc/audit-service.yaml
+      - ./swagger-ui/task-service/spec/task-service.yml:/usr/share/nginx/html/doc/task-service.yaml
+    environment:
+      URLS: "[{ url:'doc/user-service.yaml', name:'User'},
+            {url:'doc/audit-service.yaml', name:'Audit'},
+            {url:'doc/task-service.yaml', name:'Task'}]"

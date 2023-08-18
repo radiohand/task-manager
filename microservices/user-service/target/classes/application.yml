@@ -1,4 +1,6 @@
 spring:
+    config:
+      import: optional:secret.yml
     application:
         name: user-service
     datasource:
@@ -16,8 +18,8 @@ spring:
         default-encoding: UTF-8
         host: smtp.gmail.com
         port: 587
-        username: taskmanagerproject0@gmail.com
-        password: gbivjewmzghjqxij
+        username: username
+        password: password
 
         properties:
             mail:
@@ -29,6 +31,15 @@ spring:
         protocol: smtp
     thymeleaf:
         check-template-location: false
+    kafka:
+      bootstrap-servers: localhost:9092
+      template:
+        default-topic: auditTopic
+      producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+        properties:
+            spring.json.type.mapping: event:by.itacademy.taskmanager.userservice.core.dto.audit.AuditDTO
 
 server:
     port: 0
