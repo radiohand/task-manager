@@ -1,0 +1,380 @@
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+:imagesdir: images
+
+:source-highlighter: prettify
+:toc:
+
+= Task Manager Project
+
+== Overview
+
+The main purpose of this project is to create convenient backend system of task management, providing the opportunity to work not only with tasks as the main essence of the system, but also to perform a number of related processes (user registration, access control, reporting, etc.)
+
+The following technologies/frameworks were used in this project:
+
+* Maven;
+* Spring Framework:
+- Spring Boot;
+- Spring Data JPA;
+- Spring MVC;
+- Spring Security;
+- Spring Mail;
+* Spring Cloud:
+- OpenFeign;
+- Gateway;
+- Netflix Eureka;
+* Apache Kafka;
+* Micrometer;
+* Lombok;
+* PostgreSQL Database;
+* Zipkin
+* Swagger;
+* Docker.
+
+
+
+== Structure and description
+
+
+The main goal of this project is to create a RESTfull web service for task management, providing the ability to create and manage tasks and projects, which are an aggregation of tasks for a specific group of users, as well as a number of related processes (registration and login, access control, administration, audit, etc.)
+
+
+'''
+
+The full list of currently implemented microservices:
+
+- <<user_service, User-service>>;
+- <<task_service, Task-service>>;
+- <<audit_service, Audit-service>>;
+- <<api_gateway, API Gateway>>;
+- <<discovery_server, Discovery Server>>;
+
+'''
+
+NOTE: All operations are divided depending on the *role* of the user requesting for operation. Any user with *ADMIN* role has access to perform *any* operation. By default, ```Admin``` with _admin@tmproject.com_ email and password _12345678_ is created
+
+=== anchor:user_service[]User-service
+
+The general purpose of this service is to perform the following operations:
+
+* `User` creation
+
+ POST requests to "/users" and "/users/registration" URLs
+
+- `User` may be created by `Admin`:
+
+- `User` may be created by self-registration, in this case client has to perform verification of his email (link is sent to the specified email, upon opening of which user's email is validated);
+
+- `User's` passwords are encoded with PasswordEncoder (Spring Security) before saving to database;
+
+- Information about creation of any new `Users` is sent to <<audit_service, `Audit-service`>>;
+
+
+
+* Logging in and getting information about `User(s)`:
+
+- To log in, user has to provide his email and password. On success, the token is sent back in response, token should be put in headers of the further requests (header's key is *Authorization* and value is **Bearer <received token>**);
+
+- `User` may get information about himself: id, email, name, creation date, last update date, role, status:
+
+ GET requests to "/users/me" URL
+
+- `Admin` has access to see information of any `User`:
+
+ GET requests to "/users/{uuid}" URL (for signle user info), "/users" URL (for page of users info)
+
+[NOTE]
+====
+Here and further: in a GET requests to receive a page of data, the size and number of page can be passed as HTTP-request parameters (see https://datatracker.ietf.org/doc/html/rfc3986#section-3.4[Query] from RFC 3986).
+====
+
+NOTE:  The received token is to be used in requests to *all* services of this system, not only `User-service`
+
+* Update of `User's` information:
+
+ PUT request to "users/{uuid}/dt_update/{dt_update}" URL
+
+- Only `Admin` has access to update `user's` information;
+
+- The following information may be updated: email, name, role, status, password
+
+- Information about update is sent to <<audit_service, `Audit-service`>> (the sensitive information on user's old/new passwords is not reflected in audit)
+
+NOTE: For detailed information see https://github.com/radiohand/task-manager/blob/master/microservices/swagger-ui/user-service/spec/user-service.yml[openapi]
+
+'''
+
+
+=== anchor:task_service[] Task-service
+
+This service performs CRUD operations on `Project` and `Task` entities.
+
+`Project` is an entity which aggregate some `tasks` intended to be performed by a specific group of `users` . All `Tasks` put in the system must be related to some `Project`. `Project` has such [underline]#business-logic# related attributes as:
+
+[%autowidth, options="header"]
+|====
+| Attribute | Description
+
+| Name | name of project, must be unique
+| Description | some information about ```Project```, may be empty
+| Manager | ```User``` who must have *MANAGER* role
+| Status | *ACTIVE* or **ARCHIVED**
+| Staff | one or more ```Users``` no matter of their role
+
+|====
+
+
+`Task` is an entity which reflects some task put for completion in `Project`, `Task` has the following [underline]#business-logic# related attributes
+
+[%autowidth, options="header"]
+|====
+| Attribute | Description
+
+| Title | may be not unique
+| Description | some information about ```Task```, may not be null
+| Project | the ```Project``` entry  which this task is related to
+| Status | **WAIT**, **BLOCK**, **IN_WORK**, **DONE**, *CLOSE*
+| Implementer | ```User``` that is assigned to perform this ```Task```. Only ```Manager``` of the ```Project``` or ```User``` who is part of the ```Staff``` of the ```Project``` may be assigned as an ```Implementer``` of the Task
+
+|====
+
+
+
+`Project` and `Task`  have One-to-Many relationships, e.g. `Project` can include multiple number of independent `Tasks`, while any `Task` may be related only to one project in the same time;
+
+The following operations are provided on `Project` entity:
+
+* `Project` creation:
+
+ POST request to "/project" URL;
+
+- `Project` may be created only by `Admin`;
+- Only registered and active `Users` (users with *ACTIVE* status) may be added to `Project`;
+- Information on creation of the `Project` is sent to <<audit_service, `Audit-service`>>.
+
+
+* Getting information about `Project(s)`:
+
+ GET requests to "/project/{uuid}" URL (for single project info), "/project" URL (for page of projects info)
+
+- `Admin` has access to information of any `Project`;
+- The other users have access to information only about `Projects` in which they are assigned as `Manager` or a `Staff` member;
+- Information is provided either on single `Project` or as page of `Projects`;
+- When requesting for a page of `Projects`, additional boolean  parameter `__archived__` may be included as HTTP-request parameter --  if `__archived__` is set to `__true__`, the response will include also information on projects with *ARCHIVED* status (by default only information on *ACTIVE* `Projects` is sent).
+
+* Update of `Project's` information:
+
+ PUT request to "/project/{uuid}/dt_update/{dt_update}" URL
+
+- Only `Admin` or `Manager` of the `Project` have access to update `Project's` information;
+
+- The following information may be updated: name, description, manager, staff, status
+
+- On update, information of the performed changes is sent to <<audit_service, `Audit-service`>>;
+
+
+'''
+
+The following operations are provided on `Task` entity:
+
+* `Task` creation:
+
+ POST request to "/task" URL
+
+- `Task` may be created by any `User` who is in `Project` (either as `Manager` or as part of `Staff`), also task may be created by `Admin` (no matter if he is part of the `Project` or not);
+- To be assigned as an `Implementer` of the `Task`, `User` also must be either `Manager` or member of `Staff` of the project;
+- Information about creation of `Task` is sent to <<audit_service, `Audit-service`>>.
+
+* Getting information about `Task(s)`:
+
+ GET request to "/task/{uuid}" URL (for single task info), "/task" URL (for page of tasks info)
+
+- `Admin` has access to info on any `Task`;
+- The other users may see information only about `Tasks` which are part of the `Project`, where the requester is defined as `Manager` or `Staff` member;
+- A set of the following additional filters may be put as part of the request for page of `Task` info (`"/task"` URL):
+.. project (list of projects containing tasks);
+.. implementer (list of task implementers UUIDs);
+.. status (list of task statuses).
+
+[NOTE]
+====
+All the above filters are passed as HTTP-request parameters (see https://datatracker.ietf.org/doc/html/rfc3986#section-3.4[Query] from RFC 3986). Client may pass all filters, some of them, or none (in the later case filters are not applied).
+====
+
+
+* Update of `Task's` information:
+
+ PUT request to "/task/{uuid}/dt_update/{dt_update}" URL
+
+- Any `User` who is part of the `Project` may update information of `Task`;
+- `Admin` has access to update information of any `Task`;
+- If the information about `Implementer` is updated, the new value is checked to make sure new `Implementer` also is part of the `Project`;
+- On update, information of the performed changes is sent to <<audit_service, `Audit-service`>>;
+
+NOTE: For detailed information see https://github.com/radiohand/task-manager/blob/master/microservices/swagger-ui/task-service/spec/task-service.yml[openapi]
+
+'''
+
+=== anchor:audit_service[] Audit-service
+
+This service accumulates all the audit information described above. Every audit message is sent via https://kafka.apache.org/intro[Kafka] framework, where producer (User-service/Task-service) publishes information under `auditTopic` topic. By default, this topic is created with 1 partition and replication factor of 1.
+
+Audit-service, being a Kafka consumer, gathers published messages and stores them in its database. Thus, there is no access to directly add audit information to Audit-service database, all information is created automatically.
+
+Only `Admin` is allowed to get information from Audit-service directly:
+
+ GET request to "/audit/{uuid}" URL (for single task info), "/task" URL (for page of tasks info)
+
+
+Returned info is in JSON format and has the following fields:
+
+[%autowidth, options="header"]
+|====
+| Field | Description
+
+| uuid | the unique id of this audit record
+| dt_create | the unix-based time this record was created
+| user | information about the ```User``` whose actions triggered forming this audit message
+| text | detailed information about the performed actions
+| type | the type of entity (```User``` / ```Project``` / ```Task```) on which the actions where performed
+| id | the id of the *entity* which was the "target" of the performed actions
+
+|====
+
+
+The structure of `text` varies, depending on whether it was a `create` action (e.g. new record of `User` \ `Project` \ `Task` was created), `register` action (self-registration of the user finished with its email verification), or it was an `update` action (some information of the record was updated).
+
+For example, the following record in Audit-service database is formed upon `create` action for user (as JSON):
+
+[source]
+----
+{
+    "uuid": "record_uuid",
+    "dt_create": time_of_creation,
+    "user": {
+        "uuid": "admin_uuid",
+        "mail": "admin@tmproject.com",
+        "fio": "Best Admin",
+        "role": "ADMIN"
+    },
+    "text": "New user created",
+    "essence_type": "USER",
+    "id": "created_user_uuid"
+}
+----
+
+The following record in Audit-service database is formed upon `create` action for project (as JSON):
+
+[source]
+----
+{
+    "uuid": "record_uuid",
+    "dt_create": time_of_creation,
+    "user": {
+        "uuid": "admin_uuid",
+        "mail": "admin@tmproject.com",
+        "fio": "Best Admin",
+        "role": "ADMIN"
+    },
+    "text": "Project created",
+    "essence_type": "PROJECT",
+    "id": "created_project_uuid"
+}
+----
+
+NOTE: For detailed information see https://github.com/radiohand/task-manager/blob/master/microservices/swagger-ui/audit-service/spec/audit-service.yml[openapi]
+
+'''
+
+
+
+=== anchor:api_gateway[] API Gateway
+
+API Gateway is used to route a request coming from a client to a service that processes the request. For more information see https://spring.io/projects/spring-cloud-gateway[Spring Cloud Gateway]
+
+'''
+
+=== anchor:discovery_server[] Discovery Server
+
+Discovery Server is used to automatically register new instances of microservices in the application environment, and distribute client requests between instances. For more information see https://cloud.spring.io/spring-cloud-netflix/reference/html[Spring Cloud Netflix Eureka]
+
+== Installation
+
+To run a project on your machine, you will need:
+
+* Maven
+* Docker
+
+Before creating containers:
+
+* To send email and verification, you must create `secret.yml` file in `user-service/src/main/resources` folder. Then you have to make the following entry in the created file:
+
+[source]
+----
+spring:
+    mail:
+        default-encoding: UTF-8
+        host: smtp.gmail.com
+        port: 587
+        username: your_email_address_here (only with gmail domain)
+        password: your_password_here
+----
+
+* You will also need to set up authentication locally on the Docker repository you want to deploy to. You can specify DockerHub credentials in your_maven_directory/conf/settings.xml:
+
+[source]
+----
+<servers>
+    <server>
+        <id>registry.hub.docker.com</id>
+        <username><DockerHub Username></username>
+        <password><DockerHub Password></password>
+    </server>
+</servers>
+----
+
+* Run from the root of the project:
+[source]
+----
+mvn package
+----
+
+* After the packaging is done, run from the root of the project:
+[source]
+----
+mvn jib:build
+----
+Containers will be initiated by Docker and images of microservices will be uploaded to DockerHub.
+
+* To view openapi, Swagger available at http://localhost:81
+* To manage the databases, PGAdmin is available at http://localhost:82
+
+ Login: admin@admin.com
+ Password: admin
+
+* To view the list of active instances of microservices, Eureka UI is available at http://localhost:8761
+
+ Login: admin
+ Password: admin
+
+* To view the tracing of requests entering the system, Zipkin is available at http://localhost:9411
+
+
+After upping containers, you will be able to run HTTP requests to the exposed URLs.
+
+NOTE: The entrypoint to all services is API Gateway, which listens to port 80 by default. Thus, if running on local machine, all requests shall be addressed to `localhost` URL. In addition, every URL path must have `/api/v1/` suffix after the `host` part. These suffix is than removed by Gateway.
+
+For example, if running on local machine and sending request to Task-service for getting one `Task`, the final request will be as following:
+
+ GET http://localhost/api/v1/task/6e4731234-cad8-46dd-8b37-61236f939bff
+ Header: Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMjFhZTk4ZS05MTYyLTQzYzctOGIxZC1iOTEyYjYzMDBlNGEiLCJpc3MiOiJJbHlhIiwiaWF0IjoxNjkyMzQyNjU5LCJleHAiOjE2OTI5NDc0NTl9.YCg_pelWZzyPSGNpjoHTwrUN8b-kyMzQyNjU5LCJleH
+
+
+where `6e4731234...` is uuid of the `Task` record and `eyJhbG...` is a `token` received when logging in was performed.
