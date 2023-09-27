@@ -14,6 +14,26 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/users/**
+          filters:
+            - StripPrefix=2
+
+        - id: audit-service
+          uri: lb://audit-service
+          predicates:
+            - Path=/api/v1/audit/**
+          filters:
+            - StripPrefix=2
+
+        - id: task-service
+          uri: lb://task-service
+          predicates:
+            - Path=/api/v1/task/**, /api/v1/project/**
+          filters:
+            - StripPrefix=2
 
         - id: discovery-server
           uri: http://discovery-server:8761

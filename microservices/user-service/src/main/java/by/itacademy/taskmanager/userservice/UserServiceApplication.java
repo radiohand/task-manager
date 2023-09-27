@@ -39,10 +39,10 @@ public class UserServiceApplication {
 	@Bean
 	public CommandLineRunner loadData(IUserDao userDao, PasswordEncoder passwordEncoder){
 		return args -> {
-			if (userDao.findByEmail("admin@gmail.com") == null){
+			if (userDao.findByEmail("admin@tmproject.com") == null){
 				User admin = new User();
 				admin.setUuid(UUID.randomUUID());
-				admin.setEmail("admin@gmail.com");
+				admin.setEmail("admin@tmproject.com");
 				admin.setPassword(passwordEncoder.encode("12345678"));
 				admin.setFio("admin");
 				admin.setRole(UserRole.ADMIN);
